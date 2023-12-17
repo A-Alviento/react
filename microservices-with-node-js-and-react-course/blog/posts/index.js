@@ -2,6 +2,7 @@ const express = require('express'); // imports express framework to create the w
 const bodyParser = require('body-parser'); // middleware for parsing the body of incoming HTTP requests
 const { randomBytes } = require('crypto'); // module to generate random values
 const cors = require('cors'); 
+const axios = require('axios');
 
 
 const app = express(); // this is a function call to the express module to create an instance of an express application
@@ -16,7 +17,7 @@ app.get('/posts', (req, res) => {
 });
 
 // defines a route for HTTP POST request to the `/posts` URL; this route is used to create a new blog post
-app.post('/posts', (req, res) => {
+app.post('/posts', async (req, res) => {
     const id = randomBytes(4).toString('hex') // generate random 4 bytes, converted to hex
 
     const { title } = req.body; // extract the `title` of the post from the request body
@@ -24,6 +25,14 @@ app.post('/posts', (req, res) => {
     posts[id] = {
         id, title
     }; // creates new post object with generated `id` and provided `title` and stores it in the `posts` object
+
+    await axios.post('http://localhost:4005/events', {
+        type: 'PostCreated',
+        data: {
+            id,
+            title
+        }
+    });
 
     res.status(201).send(posts[id]); // sets HTTP response status to `201` (created) and sends back the newly created post
 });
