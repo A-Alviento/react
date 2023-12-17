@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'; // useEffect is used to run code a specific points in time
 import axios from 'axios';
-import { render } from 'react-dom';
+import CommentCreate from './CommentCreate';
 
 export default () => {
     const [posts, setPosts] = useState({});
@@ -24,6 +24,7 @@ export default () => {
             >
                 <div className="card-body">
                     <h3>{post.title}</h3>
+                    <CommentCreate postId={post.id} />
                 </div>
             </div>
         );
