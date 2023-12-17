@@ -1,9 +1,12 @@
 const express = require('express'); // imports express framework to create the web server
 const bodyParser = require('body-parser'); // middleware for parsing the body of incoming HTTP requests
 const { randomBytes } = require('crypto'); // module to generate random values
+const cors = require('cors'); 
+
 
 const app = express(); // this is a function call to the express module to create an instance of an express application
 app.use(bodyParser.json()); // the result of `express()` (an express application) is stored in the constant `app`; this object encapsulates all functionality of express, allowing to set up server by defining routes, middleware and listening to your request
+app.use(cors()); // server is configured to include CORS headers in its responses, telling browser it's ok to allow a web page from a different origin to make request to the server
 
 const posts = {}; // object to store posts we create; simple in-memory storage, meaning data is lost when server restarts
 
