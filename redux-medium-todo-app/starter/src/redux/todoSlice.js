@@ -1,56 +1,104 @@
-import { createSlice } from '@reduxjs/toolkit' // createSlice function allows us to create a slice of our state and the actions that can update that state
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-/**
- * createSlice function takes an object as an argument with 3 properties: name, initialState, reducers
- * name: the name of the slice
- * initialState: the initial state of the slice
- * reducers: an object that contains reducer functions that can update the state
- * 
- * a slice is a piece of the state
- */
-export const todoSlice = createSlice({ 
-    name: 'todos', // name of the slice
+export const getTodosAsync = createAsyncThunk(
+	'todos/getTodosAsync',
+	async () => {
+		const resp = await fetch('http://localhost:3001/todos');
+		if (resp.ok) {
+			const todos = await resp.json();
+			return { todos };
+		}
+	}
+);
 
-    // initial state of the slice
-    initialState: [
-        { id: 1, title: 'todo1', completed: false },
-        { id: 2, title: 'todo2', completed: false },
-        { id: 3, title: 'todo3', completed: true },
-        { id: 4, title: 'todo4', completed: false },
-        { id: 5, title: 'todo5', completed: false },
-    ],
+export const addTodoAsync = createAsyncThunk(
+	'todos/addTodoAsync',
+	async (payload) => {
+		const resp = await fetch('http://localhost:3001/todos', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ title: payload.title }),
+		});
 
-    // reducers are functions that can update the state
-    reducers: {
-        // addTodo is a reducer function that can update the state
-        addTodo: (state, action) => { 
-            const todo = {
-                id: new Date(),
-                title: action.payload.title,
-                completed: false,
-            };
-            state.push(todo);
-        },
+		if (resp.ok) {
+			const todo = await resp.json();
+			return { todo };
+		}
+	}
+);
 
-        toggleComplete: (state, action) => {
-            const index = state.findIndex((todo) => todo.id === action.payload.id); // find the index of the todo with the id that matches the payload id
-            state[index].completed = action.payload.completed; // set the completed property of the todo at the index to the payload completed
-        },
+export const toggleCompleteAsync = createAsyncThunk(
+	'todos/completeTodoAsync',
+	async (payload) => {
+		const resp = await fetch(`http://localhost:3001/todos/${payload.id}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ completed: payload.completed }),
+		});
 
-        deleteTodo: (state, action) => {
-            return state.filter((todo) => todo.id != action.payload.id);
-        },
-    },
+		if (resp.ok) {
+			const todo = await resp.json();
+			return { todo };
+		}
+	}
+);
+
+export const delTodoAsync = createAsyncThunk(
+	'todos/delTodoAsync',
+	async (payload) => {
+        const resp = await fetch(`http://localhost:3001/todos/${payload.id}`, {
+            method: 'DELETE', // DELETE is a HTTP method like GET, POST, PUT, PATCH, etc.
+        });
+
+		if (resp.ok) {
+			return { id: payload.id };
+		}
+	}
+);
+
+export const todoSlice = createSlice({
+	name: 'todos',
+	initialState: [],
+	reducers: {
+		addTodo: (state, action) => {
+			const todo = {
+				id: new Date(),
+				title: action.payload.title,
+				completed: false,
+			};
+			state.push(todo);
+		},
+		toggleComplete: (state, action) => {
+			const index = state.findIndex((todo) => todo.id === action.payload.id);
+			state[index].completed = action.payload.completed;
+		},
+		deleteTodo: (state, action) => {
+			return state.filter((todo) => todo.id !== action.payload.id);
+		},
+	},
+	extraReducers: {
+		[getTodosAsync.fulfilled]: (state, action) => {
+			return action.payload.todos;
+		},
+		[addTodoAsync.fulfilled]: (state, action) => {
+			state.push(action.payload.todo);
+		},
+		[toggleCompleteAsync.fulfilled]: (state, action) => {
+			const index = state.findIndex(
+				(todo) => todo.id === action.payload.todo.id
+			);
+			state[index].completed = action.payload.todo.completed;
+		},
+        [delTodoAsync.fulfilled]: (state, action) => {
+            return state.filter((todo) => todo.id !== action.payload.id);
+        }
+	},
 });
 
-export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions; // todoSlice.actions is an object that contains all the reducer functions
+export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions;
 
-export default todoSlice.reducer; // export the todoSlice reducer function
-
-// `addTodo` vs `todoSlice.reducer`:
-// - `addTodo`: An action creator within the `reducers` of `todoSlice`. It's used to dispatch actions to add new todos.
-//   Each call generates an action with type `{type: 'todos/addTodo'}` and the provided payload.
-//
-// - `todoSlice.reducer`: The reducer function for `todoSlice`, automatically generated by `createSlice`.
-//   It handles all actions defined in `todoSlice`, managing state transitions based on those actions.
-//   This reducer is integrated into the Redux store, but not called directly; Redux calls it internally on actions.
+export default todoSlice.reducer;

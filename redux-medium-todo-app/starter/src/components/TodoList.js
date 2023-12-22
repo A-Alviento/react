@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TodoItem from './TodoItem';
-import { useSelector } from 'react-redux'; // useSelector hook allows us to access the redux store
+import { useSelector, useDispatch } from 'react-redux';
+import { getTodosAsync } from '../redux/todoSlice';
 
 const TodoList = () => {
-	const todos = useSelector((state) => state.todos); // useSelector hook allows us to access the redux store
+	const dispatch = useDispatch();
+	const todos = useSelector((state) => state.todos);
+
+	useEffect(() => {
+		dispatch(getTodosAsync());
+	}, [dispatch]);
 
 	return (
 		<ul className='list-group'>

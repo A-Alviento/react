@@ -1,12 +1,16 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { toggleComplete } from '../redux/todoSlice'; 
+import { toggleCompleteAsync, delTodoAsync } from '../redux/todoSlice';
 
 const TodoItem = ({ id, title, completed }) => {
 	const dispatch = useDispatch();
 
 	const handleCheckboxClick = () => {
-		dispatch(toggleComplete({ id, completed: !completed }));
+		dispatch(toggleCompleteAsync({ id, completed: !completed }));
+	};
+
+	const handleDeleteClick = () => {
+		dispatch(delTodoAsync({ id }));
 	};
 
 	return (
@@ -21,7 +25,9 @@ const TodoItem = ({ id, title, completed }) => {
 					></input>
 					{title}
 				</span>
-				<button className='btn btn-danger'>Delete</button>
+				<button onClick={handleDeleteClick} className='btn btn-danger'>
+					Delete
+				</button>
 			</div>
 		</li>
 	);
