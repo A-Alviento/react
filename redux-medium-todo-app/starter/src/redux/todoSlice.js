@@ -31,6 +31,11 @@ export const todoSlice = createSlice({
             };
             state.push(todo);
         },
+
+        toggleComplete: (state, action) => {
+            const index = state.findIndex((todo) => todo.id === action.payload.id); // find the index of the todo with the id that matches the payload id
+            state[index].completed = action.payload.completed; // set the completed property of the todo at the index to the payload completed
+      },
     },
 });
 
