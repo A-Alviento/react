@@ -35,11 +35,15 @@ export const todoSlice = createSlice({
         toggleComplete: (state, action) => {
             const index = state.findIndex((todo) => todo.id === action.payload.id); // find the index of the todo with the id that matches the payload id
             state[index].completed = action.payload.completed; // set the completed property of the todo at the index to the payload completed
-      },
+        },
+
+        deleteTodo: (state, action) => {
+            return state.filter((todo) => todo.id != action.payload.id);
+        },
     },
 });
 
-export const { addTodo } = todoSlice.actions; // todoSlice.actions is an object that contains all the reducer functions
+export const { addTodo, toggleComplete, deleteTodo } = todoSlice.actions; // todoSlice.actions is an object that contains all the reducer functions
 
 export default todoSlice.reducer; // export the todoSlice reducer function
 
