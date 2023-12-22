@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
+import { useDispatch } from 'react-redux'; // useDispatch hook allows us to dispatch actions
+import { addTodo } from '../redux/todoSlice'; // import the addTodo action
 
-const AddTodoForm = () => {
+const AddTodoForm = () => { // AddTodoForm component
 	const [value, setValue] = useState('');
+	const dispatch = useDispatch(); // useDispatch hook allows us to dispatch actions
 
+	// onSubmit is an event handler that dispatches the addTodo action when the form is submitted
 	const onSubmit = (event) => {
-		event.preventDefault();
-		console.log('user entered: ' + value);
+		event.preventDefault(); // prevent the default form submit behavior which refreshes the page
+
+		// if the value is not empty, dispatch the addTodo action with the value as the payload
+		if (value) {
+			dispatch(
+				addTodo({
+					title: value,
+				})
+			);
+		}
 	};
 
 	return (
