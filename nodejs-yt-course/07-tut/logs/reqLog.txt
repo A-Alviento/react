@@ -1,0 +1,14 @@
+20231225	14:25:25	1cbd925e-41d7-4789-bf8c-ddb67a3186dd	GET	undefined	/
+20231225	14:25:26	0247f071-b669-4535-a2db-3e1f9b5bc628	GET	undefined	/css/style.css
+20231225	14:28:19	8dec1fe1-186d-4843-a152-98b64a8f4c29	GET	undefined	/
+20231225	14:28:19	ec9733e0-0869-446c-9362-add87c484f29	GET	undefined	/css/style.css
+20231225	14:30:46	7c2f336b-249a-43d7-9d61-cff6da03ce78	OPTIONS	https://www.google.com	/
+20231225	14:30:46	ba3b8f45-81b8-4add-b268-9efd16639448	GET	https://www.google.com	/
+20231225	14:34:37	96c931cc-2840-4734-8a7f-4542680cafcc	OPTIONS	https://www.google.com	/
+20231225	14:34:37	866a2533-cb1d-4814-ab65-64c3bdc15c06	GET	https://www.google.com	/
+20231225	14:34:49	783c5b0d-2f16-4cfc-b57c-84a02bb192cd	OPTIONS	https://www.google.com	/
+20231225	14:34:49	646fa1ef-3bb8-4679-9aee-493c4e9dd66e	GET	https://www.google.com	/
+20231225	14:35:31	daccdfd5-103c-4a72-803c-eed1f7baa0b3	OPTIONS	https://www.google.com	/
+20231225	14:35:31	f0a79c30-1908-4122-8703-9a6e79a2902b	GET	https://www.google.com	/
+20231225	14:36:23	dd5050d2-b93e-4e8e-b04d-9dbeaba32a27	OPTIONS	https://www.google.com	/
+20231225	14:36:23	90586b72-812a-429e-bfe1-5bcb966aee9d	GET	https://www.google.com	/
